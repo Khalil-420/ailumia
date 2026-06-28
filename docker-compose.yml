@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ailumia-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ailumia
+      POSTGRES_USER: ailumia
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me_strong_password}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - ailumia-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ailumia"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: ailumia-backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ailumia-net
+
+  frontend:
+    build: ./frontend
+    container_name: ailumia-frontend
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ailumia-net
+
+volumes:
+  pg-data:
+
+networks:
+  ailumia-net:
+    driver: bridge

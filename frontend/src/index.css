@@ -1,0 +1,356 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Updated toast styles for better visibility */
+
+body {
+  font-family: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  background: #f1f5f9;
+}
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.side-nav {
+  width: 210px;
+  flex-shrink: 0;
+  background: #111827;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0 12px;
+  border-right: 1px solid #1f2937;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.email-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.email-list-header {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 40px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.email-row {
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.email-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f1f5f9;
+  overflow: auto;
+}
+
+.compose-modal {
+  position: fixed;
+  bottom: 24px;
+  right: 36px;
+  width: 500px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 8px 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
+  overflow: hidden;
+  border: 1px solid #dde3f0;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  max-width: calc(100% - 32px);
+}
+
+.toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(100%, 420px);
+  pointer-events: none;
+  padding: 0 8px;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 24px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.12);
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  animation: slideInUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), fadeIn 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px) brightness(1.05);
+  background: linear-gradient(135deg, var(--toast-gradient-start, #2f6fd0), var(--toast-gradient-end, #1d4ccd));
+  position: relative;
+  overflow: hidden;
+  border: none;
+  /* Add subtle glow */
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.toast:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.22), 0 12px 24px rgba(15, 23, 42, 0.15);
+}
+
+.toast.success {
+  --toast-gradient-start: #2f6fd0;
+  --toast-gradient-end: #1d4ccd;
+}
+
+.toast.error {
+  --toast-gradient-start: #c62828;
+  --toast-gradient-end: #9b1b1b;
+}
+
+.toast.warning {
+  --toast-gradient-start: #d97706;
+  --toast-gradient-end: #b45309;
+}
+
+.toast.info {
+  --toast-gradient-start: #0284c7;
+  --toast-gradient-end: #0369a1;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateX(100%) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Add icon support */
+.toast-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.toast-message {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Close button improvements */
+.toast button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.toast button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(90deg);
+}
+
+/* Progress bar for auto-dismiss */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  transform-origin: left;
+  animation: progress 4s linear forwards;
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Pause progress on hover */
+.toast:hover .toast-progress {
+  animation-play-state: paused;
+}
+
+.toast button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+input:focus,
+textarea:focus {
+  border-color: #2f6fd0 !important;
+  box-shadow: 0 0 0 3px rgba(47, 111, 208, 0.18) !important;
+}
+
+@media (max-width: 1024px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .side-nav {
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .main-section {
+    min-height: calc(100vh - 300px);
+  }
+
+  .compose-modal {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .toolbar {
+    gap: 8px;
+    padding: 12px 12px;
+  }
+
+  .toolbar input,
+  .toolbar button {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .email-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: auto !important;
+    padding: 12px 16px !important;
+  }
+
+  .email-row > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .email-list-header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 16px;
+  }
+
+  .compose-modal {
+    width: auto;
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .side-nav {
+    padding: 14px 8px 10px;
+  }
+}
