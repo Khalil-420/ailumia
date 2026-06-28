@@ -42,7 +42,7 @@ function LoginPage({ onLogin }) {
       <div style={{ background:'#fff', borderRadius:16, padding:'40px 44px', width:400,
         boxShadow:'0 4px 24px rgba(0,0,0,.08)', border:'1px solid #e2e5ec' }}>
         <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:32 }}>
-          <img src="/Imedra_mail.png" alt="AILumia" style={{ width:44, height:44, objectFit:'contain' }}/>
+          <img src="/elumia.png" alt="AILumia" style={{ width:44, height:44, objectFit:'contain' }}/>
           <div>
             <div style={{ fontSize:16, fontWeight:700, color:'#1a5fa8', letterSpacing:2 }}>ELUMIA</div>
             <div style={{ fontSize:9, color:'#5b8fc7', letterSpacing:3 }}>AILumia</div>

@@ -64,7 +64,7 @@ export default function Sidebar({ active, activeCategory, onNavigate, onCategory
       borderRight:'1px solid #1f2937', overflowY:'auto' }}>
 
       <div style={{ display:'flex', alignItems:'center', gap:10, padding:'0 18px 6px' }}>
-        <img src="/Imedra_mail.png" alt="AILumia"
+        <img src="/elumia.png" alt="AILumia"
           style={{ width:40, height:40, objectFit:'contain', flexShrink:0 }}/>
         <div style={{ display:'flex', flexDirection:'column', lineHeight:1.1 }}>
           <span style={{ fontSize:12.5, fontWeight:700, color:'#f1f5f9', letterSpacing:2 }}>ELUMIA</span>
