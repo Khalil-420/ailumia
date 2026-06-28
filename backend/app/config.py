@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     sg_api_key: str
     sendgrid_from_email: str
     ai_api_key: str
-    ai_model: str = "llama3-70b-8192"
+    ai_model: str = "llama-3.3-70b-versatile"
     app_env: str = "development"
 
     class Config:
