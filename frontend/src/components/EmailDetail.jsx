@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { parseFrom } from '../utils/emailUtils';
-import { emailAction, invalidateEmailCache, getSmartReplies } from '../services/api';
+import api, { emailAction, invalidateEmailCache, getSmartReplies } from '../services/api';
 
 function formatDate(ms) {
   if (!ms) return '';
@@ -34,13 +34,11 @@ export default function EmailDetail({ email, onBack, onReply, onForward, onRefre
 
   const downloadAttachment = async (filename) => {
     try {
-      const token = localStorage.getItem('access_token');
-      const response = await fetch(
-        `/api/emails/${email.id}/attachment/${encodeURIComponent(filename)}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const response = await api.get(
+        `/emails/${email.id}/attachment/${encodeURIComponent(filename)}`,
+        { params: { folder: folder || 'INBOX' }, responseType: 'blob' }
       );
-      if (!response.ok) throw new Error(`Download failed: ${response.status}`);
-      const blob = await response.blob();
+      const blob = response.data;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -70,16 +68,12 @@ export default function EmailDetail({ email, onBack, onReply, onForward, onRefre
     if (resummarizing) return;
     setResummarizing(true);
     try {
-      const token = localStorage.getItem('access_token');
-      const res = await fetch(
-        `/api/emails/${email.id}/summarize?force=true`,
-        {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const res = await api.post(
+        `/emails/${email.id}/summarize`,
+        null,
+        { params: { folder: folder || 'INBOX', force: true } }
       );
-      if (!res.ok) throw new Error('Resummarize failed');
-      const data = await res.json();
+      const data = res.data;
       console.log('Resummarized:', data);
       // Update parent so summary shows new category
       if (onEmailsChange) {
