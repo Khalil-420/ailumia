@@ -33,7 +33,7 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: https://api.gammar.cloud
+        VITE_API_URL: https://api.gammar.cloud/api
     container_name: ailumia-frontend
     restart: unless-stopped
     depends_on:
