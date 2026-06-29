@@ -59,6 +59,7 @@ services:
     image: grafana/loki:2.9.0
     container_name: ailumia-loki
     restart: unless-stopped
+    user: "0"
     ports:
       - "127.0.0.1:3100:3100"
     volumes:
