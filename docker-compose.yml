@@ -55,6 +55,32 @@ services:
     networks:
       - ailumia-net
 
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: ailumia-loki
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3100:3100"
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - ailumia-net
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: ailumia-promtail
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+    networks:
+      - ailumia-net
+
   prometheus:
     image: prom/prometheus:latest
     container_name: ailumia-prometheus
@@ -95,6 +121,7 @@ volumes:
   pg-data:
   prometheus-data:
   grafana-data:
+  loki-data:
 
 networks:
   ailumia-net:
