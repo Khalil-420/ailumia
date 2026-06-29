@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 from app.config import get_settings
 from app.db.singleton import DatabasePool
 from app.db.migrations import run_migrations
@@ -48,6 +49,8 @@ app.include_router(auth.router)
 app.include_router(emails.router)
 app.include_router(conversations.router)
 app.include_router(admin.router)
+
+Instrumentator().instrument(app).expose(app, endpoint="/api/metrics")
 
 
 @app.get("/api/health")
