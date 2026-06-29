@@ -7,3 +7,7 @@ scrape_configs:
     static_configs:
       - targets: ['ailumia-backend:8000']
     metrics_path: /api/metrics
+
+  - job_name: node
+    static_configs:
+      - targets: ['ailumia-node-exporter:9100']
